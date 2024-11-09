@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Portfolio{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+    <style>
+        .navbar {
+            width: auto; /* Decrease the width of the navbar */
+            height: 100vh; /* Set the height of the navbar */
+        }
+        .menu-hover-fill li a {
+            font-size: 1.5rem; /* Increase the font size of the li elements */
+        }
+    </style>
+</head>
+<body class="bg-dark text-light">
+    <div class="small-screen-message">
+        Please open the website on a PC to view the portfolio.
+    </div>
+    <header>
+        <nav class="navbar navbar-dark bg-dark shadow fixed-left">
+            <div class="container-fluid d-flex flex-column justify-content-center vh-100">
+                <ul class="menu-hover-fill d-flex flex-column align-items-start text-2xl uppercase space-y-4">
+                    <li><a href="#home" data-text="home" class="nav-link">home</a></li>
+                    <li><a href="#about" data-text="about" class="nav-link">about</a></li>
+                    <li><a href="#projects" data-text="projects" class="nav-link">projects</a></li>
+                    <li><a href="#skills" data-text="skills" class="nav-link">skills</a></li>
+                    <li><a href="#achievements" data-text="achievements" class="nav-link">achievements</a></li>
+                    <li><a href="#education" data-text="education" class="nav-link">education</a></li>
+                    <li><a href="#contact" data-text="contact" class="nav-link">contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const trailCount = 10;
+            const trails = [];
+            const positions = [];
+    
+            for (let i = 0; i < trailCount; i++) {
+                const trail = document.createElement('div');
+                trail.classList.add('trail');
+                document.body.appendChild(trail);
+                trails.push(trail);
+                positions.push({ x: 0, y: 0 });
+            }
+    
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+    
+            document.addEventListener('scroll', () => {
+                const scrollX = window.scrollX;
+                const scrollY = window.scrollY;
+            });
+    
+            function animateTrails() {
+                positions.unshift({ x: mouseX + window.scrollX, y: mouseY + window.scrollY });
+                positions.pop();
+    
+                trails.forEach((trail, index) => {
+                    const pos = positions[index];
+                    trail.style.transform = `translate(${pos.x}px, ${pos.y}px)`;
+                    trail.style.opacity = 1 - (index / trailCount);
+                });
+    
+                requestAnimationFrame(animateTrails);
+            }
+    
+            animateTrails();
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const navbarLinks = document.querySelectorAll('.menu-hover-fill li a');
+    
+            navbarLinks.forEach(link => {
+                link.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
